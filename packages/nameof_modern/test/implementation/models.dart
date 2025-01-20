@@ -54,3 +54,23 @@ class Movie {
     required this.year,
   });
 }
+
+@nameof
+class _PrivateClass {
+  String privateVariable;
+
+  _PrivateClass({
+    required this.privateVariable,
+  });
+}
+
+@nameof
+class $PublicClass {
+  String publicVariable;
+  String _privateVariable = '';
+  String $publicVariable = '';
+
+  $PublicClass({
+    required this.publicVariable,
+  });
+}

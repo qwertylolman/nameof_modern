@@ -23,14 +23,16 @@ class NameofModernCodeProcessor {
   String _generateNames(NameofModernVisitor visitor) {
     StringBuffer buffer = StringBuffer();
 
-    final classContainerName = 'Nameof${visitor.className}';
+
+    final classContainerName =
+        'Nameof${visitor.className.replaceAll(RegExp('[^a-zA-Z0-9]'), '')}';
 
     buffer.writeln(
         '/// Container for names of elements belonging to the [${visitor.className}] class');
     buffer.writeln('abstract class $classContainerName {');
 
     final className =
-        'static const String className = \'${visitor.className}\';';
+        'static const String className = r\'${visitor.className}\';';
 
     final constructorNames =
         _getCodeParts('constructor', visitor.constructors.values);
@@ -40,7 +42,7 @@ class NameofModernCodeProcessor {
     final functionNames = _getCodeParts('function', visitor.functions.values);
 
     final propertyNames = _getFilteredNames(visitor.properties.values).map((prop) =>
-        'static const String property${(prop as PropertyInfo).propertyPrefix}${prop.originalName.capitalize().privatize()} = \'${prop.name}\';');
+        'static const String property${(prop as PropertyInfo).propertyPrefix}${prop.originalName.capitalize().privatize()} = r\'${prop.name}\';');
 
     void writeCode(Iterable<String> codeLines) {
       if (codeLines.isNotEmpty) {
@@ -79,6 +81,6 @@ class NameofModernCodeProcessor {
   Iterable<String> _getCodeParts(
       String elementType, Iterable<ElementInfo> elements) {
     return _getFilteredNames(elements).map((element) =>
-        'static const String $elementType${element.scopePrefix}${element.originalName.capitalize().privatize()} = \'${element.name}\';');
+        'static const String $elementType${element.scopePrefix}${element.originalName.capitalize().privatize()} = r\'${element.name}\';');
   }
 }
